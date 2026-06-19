@@ -1,0 +1,101 @@
+/* frontend/src/components/ExpenseList.css */
+.expense-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.expense-header {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1.2fr 0.5fr;
+  padding: 10px 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-weight: 700;
+  color: #555;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.expense-item {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1.2fr 0.5fr;
+  padding: 12px 15px;
+  background: white;
+  border-radius: 8px;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.expense-item:hover {
+  background-color: #f8f9ff;
+  border-color: #e0e0e0;
+}
+
+.expense-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.expense-title strong {
+  color: #333;
+}
+
+.expense-description {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.expense-category {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.expense-amount {
+  font-weight: 700;
+  color: #2d3436;
+  font-size: 1.05rem;
+}
+
+.expense-date {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn:hover {
+  background-color: #fee2e2;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #888;
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+}
+
+.empty-subtext {
+  font-size: 0.95rem;
+  margin-top: 5px;
+}

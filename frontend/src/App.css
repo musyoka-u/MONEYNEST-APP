@@ -1,0 +1,126 @@
+/* src/App.css - Mobile Responsive */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
+  color: #333;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.App {
+  min-height: 100vh;
+  padding-bottom: 20px;
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+}
+
+.app-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+/* ===== SECTIONS ===== */
+.form-section,
+.list-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.form-section h2,
+.list-section h2 {
+  margin-bottom: 15px;
+  color: #667eea;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #dc3545;
+  padding: 10px;
+  background: #f8d7da;
+  border-radius: 6px;
+  border: 1px solid #f5c6cb;
+  text-align: center;
+}
+
+/* ===== MOBILE FIRST ===== */
+
+/* Small phones (portrait) */
+@media (max-width: 480px) {
+  .app-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .app-header p {
+    font-size: 0.9rem;
+  }
+  
+  .container {
+    padding: 10px;
+  }
+  
+  .form-section,
+  .list-section {
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .form-section h2,
+  .list-section h2 {
+    font-size: 1rem;
+  }
+}
+
+/* Tablets and small desktops */
+@media (min-width: 481px) and (max-width: 768px) {
+  .app-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .container {
+    padding: 15px;
+  }
+  
+  .form-section,
+  .list-section {
+    padding: 20px;
+  }
+}
+
+/* Large screens */
+@media (min-width: 769px) {
+  .container {
+    padding: 20px 30px;
+  }
+  
+  .form-section,
+  .list-section {
+    padding: 25px 30px;
+  }
+}

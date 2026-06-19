@@ -1,0 +1,50 @@
+/* src/components/ExpenseChart.css */
+.expense-charts {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.chart-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+.chart-box {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 300px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .chart-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .expense-charts {
+    padding: 15px;
+  }
+  
+  .chart-box {
+    padding: 15px;
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .expense-charts {
+    padding: 10px;
+  }
+  
+  .chart-box {
+    padding: 10px;
+    min-height: 200px;
+  }
+}
