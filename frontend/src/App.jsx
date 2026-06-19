@@ -1,4 +1,4 @@
-// src/App.jsx - Full version with Charts and Budget
+// frontend/src/App.jsx
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import ExpenseForm from './components/ExpenseForm';
@@ -7,7 +7,8 @@ import Dashboard from './components/Dashboard';
 import ExpenseChart from './components/ExpenseChart';
 import MonthlyBudget from './components/MonthlyBudget';
 
-const API_URL = 'http://localhost:5000/api';
+// Use environment variable OR localhost
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 function App() {
   const [expenses, setExpenses] = useState([]);
@@ -71,9 +72,7 @@ function App() {
 
       <div className="container">
         <Dashboard expenses={expenses} />
-        
         <MonthlyBudget expenses={expenses} />
-        
         <ExpenseChart expenses={expenses} />
         
         <div className="form-section">
