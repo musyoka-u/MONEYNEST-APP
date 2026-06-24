@@ -12,10 +12,13 @@ import Login from './pages/Login';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 function App() {
-  const { user, logout, token } = useAuth();
+  const { user, logout } = useAuth();  // ← Remove 'token' from here
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Helper function to get token
+  const getToken = () => localStorage.getItem('token');
 
   useEffect(() => {
     if (user) {
@@ -26,6 +29,9 @@ function App() {
   const loadExpenses = async () => {
     try {
       setLoading(true);
+      const token = getToken();  // ← Get token directly
+      console.log('Loading expenses with token:', token ? 'Token exists' : 'No token');
+      
       const response = await fetch(`${API_URL}/expenses`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -36,7 +42,7 @@ function App() {
         setExpenses(data.data || []);
         setError(null);
       } else {
-        setError(data.error);
+        setError(data.error || 'Failed to load expenses');
       }
     } catch (err) {
       console.error('Error loading expenses:', err);
@@ -48,6 +54,14 @@ function App() {
 
   const addExpense = async (expenseData) => {
     try {
+      const token = getToken();  // ← Get token directly
+      console.log('Adding expense with token:', token ? 'Token exists' : 'No token');
+      
+      if (!token) {
+        console.error('No token found!');
+        return { success: false, error: 'Not logged in' };
+      }
+
       const response = await fetch(`${API_URL}/expenses`, {
         method: 'POST',
         headers: {
@@ -57,11 +71,13 @@ function App() {
         body: JSON.stringify(expenseData)
       });
       const data = await response.json();
+      console.log('Add expense response:', data);
+      
       if (data.success) {
         setExpenses([data.data, ...expenses]);
         return { success: true };
       }
-      return { success: false, error: data.error };
+      return { success: false, error: data.error || 'Failed to add expense' };
     } catch (err) {
       console.error('Error adding expense:', err);
       return { success: false, error: err.message };
@@ -70,6 +86,7 @@ function App() {
 
   const deleteExpense = async (id) => {
     try {
+      const token = getToken();  // ← Get token directly
       const response = await fetch(`${API_URL}/expenses/${id}`, {
         method: 'DELETE',
         headers: {
