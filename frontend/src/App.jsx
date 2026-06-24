@@ -1,34 +1,46 @@
 // frontend/src/App.jsx
 import React, { useState, useEffect } from 'react';
+import { useAuth } from './context/AuthContext';
 import './App.css';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
 import Dashboard from './components/Dashboard';
 import ExpenseChart from './components/ExpenseChart';
 import MonthlyBudget from './components/MonthlyBudget';
+import Login from './pages/Login';
 
-// Use environment variable OR localhost
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 function App() {
+  const { user, logout, token } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    loadExpenses();
-  }, []);
+    if (user) {
+      loadExpenses();
+    }
+  }, [user]);
 
   const loadExpenses = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/expenses`);
+      const response = await fetch(`${API_URL}/expenses`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
-      setExpenses(data.data || []);
-      setError(null);
+      if (data.success) {
+        setExpenses(data.data || []);
+        setError(null);
+      } else {
+        setError(data.error);
+      }
     } catch (err) {
       console.error('Error loading expenses:', err);
-      setError('Failed to load expenses. Make sure backend is running.');
+      setError('Failed to load expenses.');
     } finally {
       setLoading(false);
     }
@@ -38,12 +50,18 @@ function App() {
     try {
       const response = await fetch(`${API_URL}/expenses`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(expenseData)
       });
       const data = await response.json();
-      setExpenses([data.data, ...expenses]);
-      return { success: true };
+      if (data.success) {
+        setExpenses([data.data, ...expenses]);
+        return { success: true };
+      }
+      return { success: false, error: data.error };
     } catch (err) {
       console.error('Error adding expense:', err);
       return { success: false, error: err.message };
@@ -52,22 +70,42 @@ function App() {
 
   const deleteExpense = async (id) => {
     try {
-      await fetch(`${API_URL}/expenses/${id}`, {
-        method: 'DELETE'
+      const response = await fetch(`${API_URL}/expenses/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
-      setExpenses(expenses.filter(expense => expense.id !== id));
-      return { success: true };
+      const data = await response.json();
+      if (data.success) {
+        setExpenses(expenses.filter(expense => expense.id !== id));
+        return { success: true };
+      }
+      return { success: false, error: data.error };
     } catch (err) {
       console.error('Error deleting expense:', err);
       return { success: false, error: err.message };
     }
   };
 
+  // If not logged in, show login page
+  if (!user) {
+    return <Login />;
+  }
+
   return (
     <div className="App">
       <header className="app-header">
-        <h1>💰 MoneyNest</h1>
-        <p>Track your expenses smartly</p>
+        <div className="header-content">
+          <div>
+            <h1>💰 MoneyNest</h1>
+            <p>Track your expenses smartly</p>
+          </div>
+          <div className="header-right">
+            <span className="user-name">👋 {user.name}</span>
+            <button onClick={logout} className="logout-btn">Logout</button>
+          </div>
+        </div>
       </header>
 
       <div className="container">
