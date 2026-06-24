@@ -12,7 +12,7 @@ import Login from './pages/Login';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 function App() {
-  const { user, logout } = useAuth();  // ← Remove 'token' from here
+  const { user, logout } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,7 +29,7 @@ function App() {
   const loadExpenses = async () => {
     try {
       setLoading(true);
-      const token = getToken();  // ← Get token directly
+      const token = getToken();
       console.log('Loading expenses with token:', token ? 'Token exists' : 'No token');
       
       const response = await fetch(`${API_URL}/expenses`, {
@@ -38,6 +38,8 @@ function App() {
         }
       });
       const data = await response.json();
+      console.log('Load expenses response:', data);
+      
       if (data.success) {
         setExpenses(data.data || []);
         setError(null);
@@ -54,7 +56,7 @@ function App() {
 
   const addExpense = async (expenseData) => {
     try {
-      const token = getToken();  // ← Get token directly
+      const token = getToken();
       console.log('Adding expense with token:', token ? 'Token exists' : 'No token');
       
       if (!token) {
@@ -86,7 +88,10 @@ function App() {
 
   const deleteExpense = async (id) => {
     try {
-      const token = getToken();  // ← Get token directly
+      console.log('Deleting expense with ID:', id);
+      const token = getToken();
+      console.log('Delete token:', token ? 'Token exists' : 'No token');
+      
       const response = await fetch(`${API_URL}/expenses/${id}`, {
         method: 'DELETE',
         headers: {
@@ -94,11 +99,13 @@ function App() {
         }
       });
       const data = await response.json();
+      console.log('Delete response:', data);
+      
       if (data.success) {
-        setExpenses(expenses.filter(expense => expense.id !== id));
+        setExpenses(expenses.filter(expense => expense._id !== id));
         return { success: true };
       }
-      return { success: false, error: data.error };
+      return { success: false, error: data.error || 'Failed to delete expense' };
     } catch (err) {
       console.error('Error deleting expense:', err);
       return { success: false, error: err.message };

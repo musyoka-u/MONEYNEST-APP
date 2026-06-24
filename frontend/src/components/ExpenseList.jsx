@@ -1,4 +1,4 @@
-// src/components/ExpenseList.jsx
+// frontend/src/components/ExpenseList.jsx
 import React from 'react';
 import './ExpenseList.css';
 
@@ -59,7 +59,7 @@ const ExpenseList = ({ expenses, onDelete }) => {
         <span>Action</span>
       </div>
       {expenses.map((expense) => (
-        <div key={expense.id} className="expense-item">
+        <div key={expense._id} className="expense-item">
           <div className="expense-title">
             <strong>{expense.title}</strong>
             {expense.description && (
@@ -77,7 +77,7 @@ const ExpenseList = ({ expenses, onDelete }) => {
           </div>
           <button 
             className="delete-btn"
-            onClick={() => onDelete(expense.id)}
+            onClick={() => onDelete(expense._id)}
             title="Delete expense"
           >
             🗑️
